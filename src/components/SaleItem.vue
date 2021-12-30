@@ -37,6 +37,11 @@ export default {
  padding:1rem
 
   }
+
+.item:hover{
+
+cursor: pointer;}
+
 img{
 max-width: 30vw;
 max-height: 20vw;

@@ -4,10 +4,14 @@
 
  <nav>
    <h1>Mellan-dags REA</h1>
+
+<hr/>
+    <!-- ~ Cart -->
  <ul>
 
-<li v-for="item in CartItems" :key=item.itemPrice>
 
+<img class="add-to-basket"  src="https://www.clipartmax.com/png/full/219-2194400_basket-basket-icon.png"/>
+<li v-for="item in CartItems" :key=item.itemPrice>
 <p>{{item.itemTitle}}</p>
 <img width="100" :src= item.itemImg />
 <p>{{item.itemPrice}} SEK</p>
@@ -16,16 +20,33 @@
 </li>
 
    </ul>
-
+<!-- End -Cart -->
 
  </nav>
   <section class="Items-style">
 
+
+<!-- 
+<ul :v-for="item in AllItems" :key=item.id>
+
+
+<SaleItem @click=ToggleItem(1)  msg=item.ItemTitle  img="https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fHdpbnRlciUyMHByb2R1Y3R8ZW58MHx8MHx8"
+ 
+ price=1000
+ 
+ 
+ />
+
+</ul> -->
+
+
     <div>
+
+      
       
  <SaleItem @click=ToggleItem(1)  msg="Fien shoes" App img="https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fHdpbnRlciUyMHByb2R1Y3R8ZW58MHx8MHx8"
  
- price=1000
+ price = 1000
  
  
  />
@@ -33,8 +54,8 @@
       </div>
 
   
-    <SaleItem @click=ToggleItem(2) msg="Snowglazes" img= "https://images.unsplash.com/photo-1614358536373-1ce27819009e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80"/>
-  <SaleItem @click=ToggleItem(3) msg="Dronerer" img="https://images.unsplash.com/photo-1523132797263-747d5d0dbbb3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"/>
+    <SaleItem @click=ToggleItem(2) msg="Snowglazes" img= "https://images.unsplash.com/photo-1614358536373-1ce27819009e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80" price =  500 />
+  <SaleItem @click=ToggleItem(3) msg="Dronerer" img="https://images.unsplash.com/photo-1523132797263-747d5d0dbbb3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80" price= 2300 />
  
  <aside >
   
@@ -49,8 +70,10 @@
 
 
 
-    <div class="buy-box">  <img class="add-to-basket" @click=AddToCart()  src="https://www.clipartmax.com/png/full/219-2194400_basket-basket-icon.png"/>
-    <SaleItem  :msg=ViewingItems.itemTitle :img=ViewingItems.itemImg  :price="ViewingItems.Price"/>
+    <div class="buy-box" >  
+     
+    <SaleItem  :msg=SingleViewItem.itemTitle :img=SingleViewItem.itemImg :price="SingleViewItem.ItemPrice"/>
+     <p class="buy-text" @click=AddToCart() >  <img class="add-to-basket"  src="https://www.clipartmax.com/png/full/219-2194400_basket-basket-icon.png"/>Lägg till i kundkorg</p>
 </div>
 
 
@@ -76,7 +99,46 @@ export default {
 
 data(){
 return{
-ViewingItems:[],
+
+AllItems:[
+{
+        
+        
+        id:1,
+        itemTitle:"Sporty Shoes",
+        itemImg:"https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fHdpbnRlciUyMHByb2R1Y3R8ZW58MHx8MHx8",
+        itemPrice:1000
+        
+        
+        },
+        {
+        
+        
+        id:1,
+        itemTitle:"Snowglazers",
+        itemImg:"https://images.unsplash.com/photo-1614358536373-1ce27819009e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80",
+        itemPrice:500
+        
+        
+        },
+{
+        
+        
+        id:3,
+        itemTitle:"Drone",
+        itemImg:"https://images.unsplash.com/photo-1523132797263-747d5d0dbbb3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
+        itemPrice:23000
+        
+        
+        }
+
+
+
+
+],
+
+
+SingleViewItem:{},
 SavedItems:[],
 // itemTitle:'test',
 // itemImg:'',
@@ -98,9 +160,9 @@ ItemNr:0
 
       if (f==1){
 
-   this.ViewingItems.itemTitle="shoes",
-         this.ViewingItems.itemImg="https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fHdpbnRlciUyMHByb2R1Y3R8ZW58MHx8MHx8"
-        
+   this.SingleViewItem.itemTitle="shoes",
+         this.SingleViewItem.itemImg="https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fHdpbnRlciUyMHByb2R1Y3R8ZW58MHx8MHx8",
+        this.SingleViewItem.itemPrice = 1000
 
       this.SavedItems.push({
         
@@ -116,8 +178,8 @@ ItemNr:0
 
         }
      if (f==2){
-      this.ViewingItems.itemTitle="Snowglazers"
-      this.ViewingItems.itemImg="https://images.unsplash.com/photo-1614358536373-1ce27819009e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80"
+      this.SingleViewItem.itemTitle="Snowglazers"
+      this.SingleViewItem.itemImg="https://images.unsplash.com/photo-1614358536373-1ce27819009e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80"
 
 
 
@@ -136,8 +198,8 @@ ItemNr:0
         }
     
     if (f==3){
-      this.ViewingItems.itemTitle="Drorne"
-      this.ViewingItems.itemImg="https://images.unsplash.com/photo-1523132797263-747d5d0dbbb3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
+      this.SingleViewItem.itemTitle="Drorne"
+      this.SingleViewItem.itemImg="https://images.unsplash.com/photo-1523132797263-747d5d0dbbb3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
         
         
       this.SavedItems.push({
@@ -176,10 +238,20 @@ ItemNr:0
 </script>
 
 <style>
+
+nav{
+  background-color: rgba(255, 255, 255, 0.5);
+display: grid;
+grid-template-columns: 1fr 1fr 1fr;
+border: 1px solid grey;
+
+
+}
 nav ul{
 
   display: flex;
-  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid grey;
+
 }
 
 
@@ -206,6 +278,14 @@ h1{
   background-color: rgba(255, 255, 255, 0.7);
 padding: 1rem;
 }
+
+
+h3{
+  padding:1rem;
+    background-color: rgba(187, 83, 83, 0.2);
+
+}
+
 #app {
   background-image: url(https://images.unsplash.com/photo-1512730129227-9cfa8f234591?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1924&q=80);
   background-size: contain;
@@ -243,10 +323,27 @@ padding: 5rem;
 display:flex;
 }
 
+.buy-text{
+
+padding: 1rem;
+  color: darkslategrey;
+  border: 1px dashed salmon;
+  max-height:5vh;
+}
+
 .add-to-basket{
 max-width: 2rem;
 max-height: 2rem;
+padding-right: 1rem;
 }
+
+.buy-text:hover{
+  cursor: pointer;
+  border: 1px solid salmon;
+}
+
+
+
 
 
 button{
