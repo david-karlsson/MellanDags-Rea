@@ -26,37 +26,22 @@
   <section class="Items-style">
 
 
-<!-- 
-<ul :v-for="item in AllItems" :key=item.id>
+
+<ul v-for="item in AllItems" :key=item.id>
 
 
-<SaleItem @click=ToggleItem(1)  msg=item.ItemTitle  img="https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fHdpbnRlciUyMHByb2R1Y3R8ZW58MHx8MHx8"
+<SaleItem @click=ToggleItem(item.id)  :msg=item.itemTitle  :img=item.itemImg
  
- price=1000
- 
- 
- />
-
-</ul> -->
-
-
-    <div>
-
-      
-      
- <SaleItem @click=ToggleItem(1)  msg="Fien shoes" App img="https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fHdpbnRlciUyMHByb2R1Y3R8ZW58MHx8MHx8"
- 
- price = 1000
+ :price=item.itemPrice
  
  
  />
-  
-      </div>
+
+</ul>
+
+
 
   
-    <SaleItem @click=ToggleItem(2) msg="Snowglazes" img= "https://images.unsplash.com/photo-1614358536373-1ce27819009e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80" price =  500 />
-  <SaleItem @click=ToggleItem(3) msg="Dronerer" img="https://images.unsplash.com/photo-1523132797263-747d5d0dbbb3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80" price= 2300 />
- 
  <aside >
   
 
@@ -70,18 +55,18 @@
 
 
 
-    <div class="buy-box" >  
+    <div class="buy-box" v-if= "ItemViewSwitcher != 0">  
      
-    <SaleItem  :msg=SingleViewItem.itemTitle :img=SingleViewItem.itemImg :price="SingleViewItem.ItemPrice"/>
+    <SaleItem  :msg=SingleViewItem.itemTitle :img=SingleViewItem.itemImg :price="SingleViewItem.itemPrice"/>
      <p class="buy-text" @click=AddToCart() >  <img class="add-to-basket"  src="https://www.clipartmax.com/png/full/219-2194400_basket-basket-icon.png"/>Lägg till i kundkorg</p>
 </div>
 
 
-  <span>
+  <!-- <span>
 <button @click=ToggleItem(1)>See Item 1</button>
 <button @click=ToggleItem(2)>See Item 2</button>
 <button @click=ToggleItem(3)>See Item 3</button>
-  </span>
+  </span> -->
 
 
 </section>
@@ -104,7 +89,7 @@ AllItems:[
 {
         
         
-        id:1,
+        id:0,
         itemTitle:"Sporty Shoes",
         itemImg:"https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fHdpbnRlciUyMHByb2R1Y3R8ZW58MHx8MHx8",
         itemPrice:1000
@@ -124,7 +109,7 @@ AllItems:[
 {
         
         
-        id:3,
+        id:2,
         itemTitle:"Drone",
         itemImg:"https://images.unsplash.com/photo-1523132797263-747d5d0dbbb3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
         itemPrice:23000
@@ -138,7 +123,7 @@ AllItems:[
 ],
 
 
-SingleViewItem:{},
+SingleViewItem:{'id':0},
 SavedItems:[],
 // itemTitle:'test',
 // itemImg:'',
@@ -146,7 +131,7 @@ SavedItems:[],
 
 CartItems:[],
 
-ItemNr:0
+ItemViewSwitcher:0
 
 
 }
@@ -158,65 +143,68 @@ ItemNr:0
 
     ToggleItem(f){
 
-      if (f==1){
 
-   this.SingleViewItem.itemTitle="shoes",
-         this.SingleViewItem.itemImg="https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fHdpbnRlciUyMHByb2R1Y3R8ZW58MHx8MHx8",
-        this.SingleViewItem.itemPrice = 1000
+
+
+      // if (f==1){
+this.ItemViewSwitcher = 1
+   this.SingleViewItem.itemTitle=this.AllItems[f].itemTitle,
+         this.SingleViewItem.itemImg=this.AllItems[f].itemImg,
+        this.SingleViewItem.itemPrice = this.AllItems[f].itemPrice,
 
       this.SavedItems.push({
         
         
         
-        itemTitle:"shoes",
-        itemImg:"https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fHdpbnRlciUyMHByb2R1Y3R8ZW58MHx8MHx8",
-        itemPrice:1000
+        itemTitle:this.AllItems[f].itemTitle,
+        itemImg:this.AllItems[f].itemImg,
+        itemPrice:this.AllItems[f].itemPrice
         
         
         })
  
 
-        }
-     if (f==2){
-      this.SingleViewItem.itemTitle="Snowglazers"
-      this.SingleViewItem.itemImg="https://images.unsplash.com/photo-1614358536373-1ce27819009e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80"
+    //     }
+    //  if (f==2){
+    //   this.SingleViewItem.itemTitle="Snowglazers"
+    //   this.SingleViewItem.itemImg="https://images.unsplash.com/photo-1614358536373-1ce27819009e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80"
 
 
 
-      this.SavedItems.push({
+    //   this.SavedItems.push({
         
         
         
-        itemTitle:"Snowglazers",
-        itemImg:"https://images.unsplash.com/photo-1614358536373-1ce27819009e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80",
-        itemPrice:500
+    //     itemTitle:"Snowglazers",
+    //     itemImg:"https://images.unsplash.com/photo-1614358536373-1ce27819009e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80",
+    //     itemPrice:500
         
         
-        })
+    //     })
 
 
-        }
+    //     }
     
-    if (f==3){
-      this.SingleViewItem.itemTitle="Drorne"
-      this.SingleViewItem.itemImg="https://images.unsplash.com/photo-1523132797263-747d5d0dbbb3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
+    // if (f==3){
+    //   this.SingleViewItem.itemTitle="Drorne"
+    //   this.SingleViewItem.itemImg="https://images.unsplash.com/photo-1523132797263-747d5d0dbbb3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
         
         
-      this.SavedItems.push({
-        
-        
-        
-        itemTitle:"Drorne",
-        itemImg:"https://images.unsplash.com/photo-1523132797263-747d5d0dbbb3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
-        itemPrice:23000
-        
-        
-        })
+    //   this.SavedItems.push({
         
         
         
+    //     itemTitle:"Drorne",
+    //     itemImg:"https://images.unsplash.com/photo-1523132797263-747d5d0dbbb3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
+    //     itemPrice:23000
         
-        }
+        
+    //     })
+        
+        
+        
+        
+        // }
 
         
     
@@ -250,8 +238,8 @@ border: 1px solid grey;
 nav ul{
 
   display: flex;
-  border: 1px solid grey;
-
+  border: 1px solid whitesmoke;
+padding: 1rem;
 }
 
 
@@ -321,6 +309,8 @@ padding: 5rem;
 
 .buy-box{
 display:flex;
+
+
 }
 
 .buy-text{
