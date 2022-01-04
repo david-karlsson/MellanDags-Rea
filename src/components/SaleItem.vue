@@ -3,11 +3,17 @@
     <h2>{{ msg }}</h2>
     <p>
      <img :src=img />
-<strong>{{price}} SEK</strong>
 
 
     </p>
   
+
+<strong>{{cat}}</strong>
+<em>
+{{desc}}
+</em>
+<strong>{{price}} SEK</strong>
+
   </div>
 </template>
 
@@ -17,7 +23,9 @@ export default {
   props: {
     msg: String,
     img:String,
-    price:Number
+    price:Number,
+    desc:String,
+    cat:String
   }
 }
 </script>
@@ -56,11 +64,33 @@ ul {
   list-style-type: none;
   padding: 0;
 }
-li {
 
-  padding: 1rem
-}
 a {
   color: #42b983;
+}
+
+p, strong{
+  margin: 1rem;
+}
+
+strong{
+  color: darkgreen;
+  text-transform: uppercase;
+}
+
+em{
+letter-spacing: 1px;
+line-height: 1.7;
+background: azure;
+padding: 2rem;
+color: darkslategrey;
+
+}
+
+em::first-letter{
+  color: darkred;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 </style>

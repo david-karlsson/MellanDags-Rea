@@ -1,5 +1,5 @@
 <template>
-
+<div>
 
 
  <nav>
@@ -11,46 +11,26 @@
 
 
 <img class="add-to-basket"  src="https://www.clipartmax.com/png/full/219-2194400_basket-basket-icon.png"/>
-<li v-for="item in CartItems" :key=item.itemPrice>
+<li v-for="item in CartItems" :key=item.id>
 <p>{{item.itemTitle}}</p>
+<p>{{item.title}}</p>
+
 <img width="100" :src= item.itemImg />
 <p>{{item.itemPrice}} SEK</p>
 
-
 </li>
+
+
+
+
+
 
    </ul>
 <!-- End -Cart -->
 
  </nav>
-  <section class="Items-style">
 
-
-
-<ul v-for="item in AllItems" :key=item.id>
-
-
-<SaleItem @click=ToggleItem(item.id)  :msg=item.itemTitle  :img=item.itemImg
- 
- :price=item.itemPrice
- 
- 
- />
-
-</ul>
-
-
-
-  
- <aside >
-  
-
-   
- </aside>
- 
-  </section>
-
-<section  class="Items-center" >
+ <section  class="Items-center" >
     
 
 
@@ -70,7 +50,79 @@
 
 
 </section>
+  <section class="Items-style">
 
+
+
+<ul v-for="item in AllItems" :key=item.id>
+
+
+<SaleItem @click=ToggleItem(item.id)  :msg=item.itemTitle  :img=item.itemImg
+ 
+ :price=item.itemPrice
+ 
+ 
+ />
+
+
+
+</ul>
+
+
+
+ 
+  </section>
+<section>
+
+  
+<span v-if="ApiFetchSwitch == 0" >
+
+{{storeFetch()}}
+{{ApiItems}}
+
+</span>
+
+
+<ul class="flex">
+
+<div v-for="item in ApiItems" :key=item >
+
+
+
+<li v-for="i in item" :key=i.id>
+
+
+<SaleItem @click=ToggleItem(i.id)  :msg=i.title  :img=i.image
+:cat =i.category :desc = i.description
+ :price=i.price
+
+
+/>
+
+<!--   
+  <p v-for="i2 in i" :key=i2.id >
+
+
+    
+    {{i2.title}}
+    </p> -->
+</li>
+
+
+
+</div>
+
+</ul>
+<!-- 
+<img width="100" :src= item.itemImg />
+<p>{{item.itemPrice}} SEK</p> -->
+
+
+  
+ 
+</section>
+
+</div>
 </template>
 
 <script>
@@ -84,6 +136,8 @@ export default {
 
 data(){
 return{
+
+ApiItems:[],
 
 AllItems:[
 {
@@ -131,8 +185,9 @@ SavedItems:[],
 
 CartItems:[],
 
-ItemViewSwitcher:0
+ItemViewSwitcher:0,
 
+ApiFetchSwitch:0
 
 }
 
@@ -141,6 +196,46 @@ ItemViewSwitcher:0
 
   methods:{
 
+                storeFetch(){
+
+                    fetch('https://fakestoreapi.com/products/')
+                    .then(res=>res.json())
+        
+                    // .then(res=> console.log(res))
+        
+
+          .then(res=> 
+
+            this.ApiItems.push(res),
+
+
+console.log(this.ApiItems)
+
+          )
+
+
+                    // .then(res=>
+                    //      res.forEach(element => {
+
+                    //         element.forEach(i => {
+                    //              this.ApiItems.concat(i)
+
+                    //               console.log(this.ApiItems) 
+                    //         })
+
+
+                                     
+
+                    // })
+                    
+                    // )
+                                      this.ApiFetchSwitch = 1
+
+                   
+                    
+                    },
+
+                   
     ToggleItem(f){
 
 
@@ -148,9 +243,22 @@ ItemViewSwitcher:0
 
       // if (f==1){
 this.ItemViewSwitcher = 1
+
+
+
    this.SingleViewItem.itemTitle=this.AllItems[f].itemTitle,
          this.SingleViewItem.itemImg=this.AllItems[f].itemImg,
         this.SingleViewItem.itemPrice = this.AllItems[f].itemPrice,
+
+
+  //  this.SingleViewItem.itemTitle=this.ApiItems[f].title,
+  //        this.SingleViewItem.itemImg=this.ApiItems[f].image,
+  //       this.SingleViewItem.itemPrice = this.ApiItems[f].price,
+
+
+
+
+
 
       this.SavedItems.push({
         
@@ -158,8 +266,8 @@ this.ItemViewSwitcher = 1
         
         itemTitle:this.AllItems[f].itemTitle,
         itemImg:this.AllItems[f].itemImg,
-        itemPrice:this.AllItems[f].itemPrice
-        
+        itemPrice:this.AllItems[f].itemPrice,
+        id:this.AllItems[f].id
         
         })
  
@@ -226,7 +334,30 @@ this.ItemViewSwitcher = 1
 </script>
 
 <style>
+.flex{
 
+  list-style-type: none;
+  display: grid;
+ flex-direction: column;
+ align-items: center;
+}
+
+.flex div{
+display: flex;
+flex-wrap:wrap ;
+ justify-content: center;
+
+}
+
+.flex li{
+  max-width: 30vw;
+background-color: rgba(250, 255, 252, 0.8);
+border: 2px dotted lightblue;
+  }
+
+.flex img {
+  max-width: 100%;
+}
 nav{
   background-color: rgba(255, 255, 255, 0.5);
 display: grid;
@@ -240,6 +371,7 @@ nav ul{
   display: flex;
   border: 1px solid whitesmoke;
 padding: 1rem;
+
 }
 
 
